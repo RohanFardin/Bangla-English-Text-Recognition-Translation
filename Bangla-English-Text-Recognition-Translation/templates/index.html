@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangla - English OCR</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { margin-top: 50px; }
+        input[type="file"] { margin: 20px 0; }
+        img { max-width: 100%; margin-top: 20px; }
+        .result { margin-top: 20px; font-weight: bold; }
+        .translate-btn { margin-top: 20px; padding: 10px 15px; cursor: pointer; }
+    </style>
+    <script>
+        function translateText() {
+            let text = document.getElementById("extracted-text").innerText;
+            fetch("/translate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("extracted-text").innerText = data.translated_text;
+                document.getElementById("translate-btn").innerText = data.button_text;
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload an Image to Extract Bangla-English Text</h2>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            <button type="submit">Upload & Extract</button>
+        </form>
+
+        {% if uploaded_image %}
+            <h3>Uploaded Image:</h3>
+            <img src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" alt="Uploaded Image">
+        {% endif %}
+
+        {% if text %}
+            <h3>Extracted Text:</h3>
+            <p id="extracted-text" class="result">{{ text }}</p>
+            <button id="translate-btn" class="translate-btn" onclick="translateText()">
+                {{ button_text }}
+            </button>
+        {% endif %}
+    </div>
+
+</body>
+</html>
