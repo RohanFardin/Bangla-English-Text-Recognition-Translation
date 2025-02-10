@@ -1,0 +1,19 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments (if you create one)
+venv/
+
+# Ignore uploaded images (so they don't get pushed to GitHub)
+static/uploads/
+
+# Ignore environment variables (if you use a .env file)
+.env
+
+# Ignore IDE settings and logs
+.vscode/
+.idea/
+*.log
